@@ -1,8 +1,8 @@
 {
   "extends": "@cedh-game-tracker/typescript-config/base.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "strict": true,
+    "allowImportingTsExtensions": true
   },
-  "include": ["./"],
-  "exclude": ["node_modules"]
+  "include": ["src"]
 }

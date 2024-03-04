@@ -1,0 +1,32 @@
+{
+  "name": "@cedh-game-tracker/api",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "API for cEDH Game Tracker",
+  "exports": {
+    "./router": "./src/router.ts",
+    "./context": "./src/context.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json --outDir ./dist",
+    "clean": "rm -rf node_modules/",
+    "dev": "nodemon"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@trpc/server": "11.0.0-next-beta.305",
+    "cors": "^2.8.5",
+    "express": "^4.18.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@cedh-game-tracker/typescript-config": "workspace:*",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.24",
+    "fastify-cli": "^6.1.1",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
