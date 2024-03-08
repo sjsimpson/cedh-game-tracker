@@ -8,7 +8,9 @@
   ],
   "scripts": {
     "build": "turbo build",
-    "clean": "turbo clean",
+    "clean": "turbo clean && rm -rf node_modules/",
+    "db:generate": "turbo db:generate",
+    "db:push": "turbo db:push",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""

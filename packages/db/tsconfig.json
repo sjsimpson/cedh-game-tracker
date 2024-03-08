@@ -1,0 +1,4 @@
+{
+  "extends": "@cedh-game-tracker/typescript-config/base.json",
+  "include": ["./"]
+}

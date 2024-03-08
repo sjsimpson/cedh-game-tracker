@@ -1,8 +1,9 @@
 {
   "extends": "@cedh-game-tracker/typescript-config/base.json",
   "compilerOptions": {
+    "module": "esnext",
     "strict": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["src"]
+  "include": ["src/**/*.ts"]
 }

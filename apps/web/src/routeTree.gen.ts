@@ -17,7 +17,7 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const NotesLazyImport = createFileRoute('/notes')()
-const AboutLazyImport = createFileRoute('/about')()
+const NewUserLazyImport = createFileRoute('/new-user')()
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
@@ -27,10 +27,10 @@ const NotesLazyRoute = NotesLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/notes.lazy').then((d) => d.Route))
 
-const AboutLazyRoute = AboutLazyImport.update({
-  path: '/about',
+const NewUserLazyRoute = NewUserLazyImport.update({
+  path: '/new-user',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/new-user.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
@@ -45,8 +45,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      preLoaderRoute: typeof AboutLazyImport
+    '/new-user': {
+      preLoaderRoute: typeof NewUserLazyImport
       parentRoute: typeof rootRoute
     }
     '/notes': {
@@ -60,7 +60,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
-  AboutLazyRoute,
+  NewUserLazyRoute,
   NotesLazyRoute,
 ])
 

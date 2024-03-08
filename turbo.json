@@ -7,9 +7,16 @@
     },
     "lint": {},
     "clean": {
-      "cache":false
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
     },
     "dev": {
+      "dependsOn": ["@cedh-game-tracker/db#db:generate"],
       "cache": false,
       "persistent": true
     }

@@ -2,7 +2,7 @@ import "@cedh-game-tracker/tailwind/globals.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { httpBatchLink } from "@trpc/client";
+import { httpLink } from "@trpc/client";
 import { StrictMode, useState } from "react";
 import ReactDOM from "react-dom/client";
 
@@ -25,15 +25,8 @@ export function App() {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
-        httpBatchLink({
-          url: "http://localhost:4000/trpc",
-
-          // You can pass any HTTP headers you wish here
-          // async headers() {
-          //   return {
-          //     authorization: getAuthCookie(),
-          //   };
-          // },
+        httpLink({
+          url: "http://localhost:3000/trpc",
         }),
       ],
     }),
