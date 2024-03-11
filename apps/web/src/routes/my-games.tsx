@@ -1,6 +1,18 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createLazyFileRoute("/notes")({
+export const Route = createFileRoute("/my-games")({
+  beforeLoad: async ({ location }) => {
+    const test = true;
+    if (test) {
+      throw redirect({
+        to: "/",
+        search: {
+          login: true,
+          redirect: location.href,
+        },
+      });
+    }
+  },
   component: Notes,
 });
 

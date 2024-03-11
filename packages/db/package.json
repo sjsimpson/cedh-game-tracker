@@ -2,7 +2,7 @@
   "name": "@cedh-game-tracker/db",
   "version": "1.0.0",
   "description": "Database for cEDH Game Tracker",
-  "private": "true",
+  "private": true,
   "main": "index.ts",
   "types": "index.ts",
   "license": "ISC",

@@ -15,7 +15,7 @@ export const userRouter = router({
   getUserById: publicProcedure.input(z.string()).query((opts) => {
     return users.find((user) => user.id === opts.input); // input type is string
   }),
-  getUsers: publicProcedure.query(() => {
+  getUsers: publicProcedure.query(({ ctx }) => {
     return users;
   }),
   createUser: publicProcedure

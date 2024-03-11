@@ -1,6 +1,6 @@
 import { Button, Input, Label } from "@cedh-game-tracker/ui";
 import { useForm, type FieldApi } from "@tanstack/react-form";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { trpc } from "../utils/trpc";
 
@@ -15,7 +15,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   );
 }
 
-export const Route = createLazyFileRoute("/new-user")({
+export const Route = createFileRoute("/new-user")({
   component: About,
 });
 
