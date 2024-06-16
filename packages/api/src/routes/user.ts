@@ -3,20 +3,12 @@ import { z } from "zod";
 
 import { publicProcedure, router } from "../context";
 
-type User = {
-  id: string;
-  name: string;
-  bio?: string;
-};
-
-const users: User[] = [];
-
 export const userRouter = router({
-  getUserById: publicProcedure.input(z.string()).query((opts) => {
-    return users.find((user) => user.id === opts.input); // input type is string
-  }),
+  // getUserById: publicProcedure.input(z.string()).query((opts) => {
+  //   return users.find((user) => user.id === opts.input); // input type is string
+  // }),
   getUsers: publicProcedure.query(() => {
-    return users;
+    return prisma.user.findMany({ select: { id: true, username: true } });
   }),
   createUser: publicProcedure
     .input(

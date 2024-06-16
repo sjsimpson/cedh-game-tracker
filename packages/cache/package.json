@@ -1,0 +1,21 @@
+{
+  "name": "@cedh-game-tracker/cache",
+  "version": "1.0.0",
+  "description": "Redis caching for cEDH Game Tracker",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rm -rf node_modules/"
+  },
+  "dependencies": {
+    "connect-redis": "^7.1.1",
+    "redis": "^4.6.13"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.4.2"
+  }
+}

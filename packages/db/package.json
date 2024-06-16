@@ -2,15 +2,16 @@
   "name": "@cedh-game-tracker/db",
   "version": "1.0.0",
   "description": "Database for cEDH Game Tracker",
-  "private": "true",
+  "private": true,
   "main": "index.ts",
   "types": "index.ts",
   "license": "ISC",
   "scripts": {
     "clean": "rm -rf node_modules/",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate",
-    "db:push": "prisma db push --skip-generate"
+    "with-env": "dotenv -e ../../.env",
+    "db:generate": "pnpm with-env -- prisma generate",
+    "db:migrate": "pnpm with-env -- prisma migrate",
+    "db:push": "pnpm with-env -- prisma db push --skip-generate"
   },
   "dependencies": {
     "@prisma/client": "^5.10.2"
@@ -19,6 +20,7 @@
     "@cedh-game-tracker/eslint-config": "workspace:*",
     "@cedh-game-tracker/typescript-config": "workspace:*",
     "@types/node": "^20.11.24",
+    "dotenv-cli": "^7.4.2",
     "eslint": "^8.56.0",
     "prisma": "^5.10.2",
     "ts-node": "^10.9.2",

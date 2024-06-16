@@ -1,7 +1,21 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "globalDependencies": [".env"],
+  "tasks": {
     "build": {
+      "env": [
+        "NODE_ENV",
+        "APP_ORIGIN",
+        "SESSION_SECRET",
+        "TRPC_PREFIX",
+        "REDIS_HOST",
+        "REDIS_PORT",
+        "REDIS_PASSWORD",
+        "REDIS_SECRET",
+        "API_HOST",
+        "API_PORT",
+        "DATABASE_URL"
+      ],
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },

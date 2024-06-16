@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { publicProcedure, router } from "../context";
+import { authedProcedure, publicProcedure, router } from "../context";
 
 const gameSchema = z.object({
   id: z.string(),
@@ -35,11 +35,11 @@ export const gameRouter = router({
       return game;
     }),
 
-  getGames: publicProcedure.query(() => {
+  getGames: authedProcedure.query(() => {
     return games;
   }),
 
-  getGame: publicProcedure
+  getGame: authedProcedure
     .input(z.object({ id: z.string() }))
     .query(({ input }) => {
       return games.find((game) => game.id === input.id);

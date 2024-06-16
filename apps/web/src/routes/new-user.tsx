@@ -1,6 +1,6 @@
 import { Button, Input, Label } from "@cedh-game-tracker/ui";
 import { useForm, type FieldApi } from "@tanstack/react-form";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { trpc } from "../utils/trpc";
 
@@ -15,11 +15,13 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   );
 }
 
-export const Route = createLazyFileRoute("/new-user")({
+export const Route = createFileRoute("/new-user")({
   component: About,
 });
 
 function About() {
+  const createUser = trpc.users.createUser.useMutation();
+
   const form = useForm({
     defaultValues: {
       username: "",
@@ -27,22 +29,14 @@ function About() {
       password: "",
     },
     onSubmit: async ({ value }) => {
-      await createUser.mutateAsync(
-        {
-          username: value.username,
-          email: value.email,
-          password: value.password,
-        },
-        {
-          onSuccess: () => {
-            users.refetch();
-          },
-        },
-      );
+      await createUser.mutateAsync({
+        username: value.username,
+        email: value.email,
+        password: value.password,
+      });
     },
   });
-  const createUser = trpc.users.createUser.useMutation();
-  const users = trpc.users.getUsers.useQuery();
+
   return (
     <div className="p-2">
       Hello from About!
@@ -172,15 +166,6 @@ function About() {
           </div>
         </form>
       </form.Provider>
-      <div>
-        {users.isSuccess &&
-          users.data.map((user, index) => (
-            <div key={user.id}>
-              <div>User {index}</div>
-              <div>name: {user.name}</div>
-            </div>
-          ))}
-      </div>
     </div>
   );
 }

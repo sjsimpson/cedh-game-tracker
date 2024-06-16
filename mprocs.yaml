@@ -1,0 +1,16 @@
+keymap_procs:
+  <t>: { c: toggle-focus }
+  <C-a>: null
+keymap_procs:
+  <t>: { c: toggle-focus }
+  <C-a>: null
+procs:
+  dc-up:
+    shell: "docker compose up"
+    autostart: false
+  dc-down:
+    shell: "docker compose down"
+    autostart: false
+  dev-server:
+    shell: "pnpm dev"
+    autostart: false
