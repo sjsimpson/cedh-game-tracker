@@ -269,6 +269,12 @@ importers:
 
   packages/ui:
     dependencies:
+      '@maskito/core':
+        specifier: ^2.4.0
+        version: 2.4.0
+      '@maskito/react':
+        specifier: ^2.4.0
+        version: 2.4.0(@maskito/core@2.4.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@radix-ui/react-dialog':
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@18.2.19)(@types/react@18.2.62)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -874,6 +880,16 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@maskito/core@2.4.0':
+    resolution: {integrity: sha512-0Yvo2FJjy6OHYaoiTutwIOCQxVpl6OuLpFVepDoY0m7/SHRBOJ1DEr2tVU63kMoQ+9/zRa7SyHOY6SuOZyMJrA==}
+
+  '@maskito/react@2.4.0':
+    resolution: {integrity: sha512-peQUR3kOHrcr4YJMcNrI1W3cTEQrj6mDKq2wqgeF6hCzdY5G7ewbjPW04TQx17pv2og3yJML0ky42JYSvb8WNw==}
+    peerDependencies:
+      '@maskito/core': ^2.4.0
+      react: '>=16.8'
+      react-dom: '>=16.8'
 
   '@next/env@14.1.3':
     resolution: {integrity: sha512-VhgXTvrgeBRxNPjyfBsDIMvgsKDxjlpw4IAUsHCX8Gjl1vtHUYRT3+xfQ/wwvLPDd/6kqfLqk9Pt4+7gysuCKQ==}
@@ -3685,6 +3701,14 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
+
+  '@maskito/core@2.4.0': {}
+
+  '@maskito/react@2.4.0(@maskito/core@2.4.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@maskito/core': 2.4.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
 
   '@next/env@14.1.3': {}
 

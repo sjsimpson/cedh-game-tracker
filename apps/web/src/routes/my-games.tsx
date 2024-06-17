@@ -12,7 +12,8 @@ export const Route = createFileRoute("/my-games")({
   //   clientUtils.games.getGames.ensureData();
   // },
   beforeLoad: async ({ context: { auth }, location }) => {
-    if (!auth.isAuthenticated) {
+    const isAuthenticated = await auth.isAuthenticated();
+    if (!isAuthenticated) {
       throw redirect({
         to: "/",
         search: {

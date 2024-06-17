@@ -23,7 +23,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 
 // TODO: Refactor extraction with "DialogHeader" and "DialogFooter",
 // it feels weird in this context
-export function LoginForm() {
+export function LoginForm({ onSuccess }: { onSuccess: () => void }) {
   const auth = useAuth();
 
   const form = useForm({
@@ -31,7 +31,7 @@ export function LoginForm() {
       email: "",
       password: "",
     },
-    onSubmit: async ({ value }) => await auth.login(value),
+    onSubmit: async ({ value }) => await auth.login(value, { onSuccess }),
   });
 
   return (

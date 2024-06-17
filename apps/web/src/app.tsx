@@ -3,7 +3,7 @@ import "@cedh-game-tracker/tailwind/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { httpLink } from "@trpc/client";
-import { StrictMode, Suspense, useEffect } from "react";
+import { StrictMode, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 
 import { AuthProvider, useAuth } from "./auth";
@@ -54,36 +54,6 @@ declare module "@tanstack/react-router" {
 // Create root app
 export function AppInner() {
   const auth = useAuth();
-
-  const validateQuery = trpc.auth.validate.useQuery(undefined, {
-    retry: false,
-  });
-
-  useEffect(() => {
-    // NOTE: refetch validation query on authenticated path navigate?
-    // it's probably better to just revalidate on EACH page navigate
-    // --> currently validate on all pages EXCEPT home, because that's where
-    // we reroute when authentication is missing
-    const unsubscribe = router.subscribe(
-      "onBeforeLoad",
-      ({ toLocation, pathChanged }) =>
-        pathChanged && toLocation.pathname !== "/" && validateQuery.refetch(),
-    );
-
-    return () => unsubscribe();
-  }, []);
-
-  // NOTE: Logout if validationQuery fails and we have a current user (means session is expired)
-  useEffect(() => {
-    if (validateQuery.isError && auth.user) {
-      auth.logout();
-    }
-  }, [validateQuery.isError]);
-
-  // NOTE: Invalidate router when authentication status changes, retriggering beforeLoad/loader functions
-  useEffect(() => {
-    router.invalidate();
-  }, [auth.isAuthenticated]);
 
   return <RouterProvider router={router} context={{ auth }} />;
 }

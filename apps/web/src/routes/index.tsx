@@ -36,13 +36,6 @@ function Index() {
     setLocalOpen(routeSearch.login || false);
   }, [routeSearch]);
 
-  useEffect(() => {
-    if (auth.isAuthenticated) {
-      setLocalOpen(false);
-      navigate({ to: routeSearch.redirect ?? "/" });
-    }
-  }, [auth.isAuthenticated]);
-
   const handleCloseModal = () => {
     setLocalOpen(false);
     navigate({ search: () => ({}) }); // NOTE: Kinda janky, but gets rid of weird refresh issues
@@ -56,7 +49,12 @@ function Index() {
           <Button onClick={() => setLocalOpen(!localOpen)}>Open Login</Button>
         </DialogTrigger>
         <DialogContent handleClose={handleCloseModal} className="bg-white">
-          <LoginForm />
+          <LoginForm
+            onSuccess={() => {
+              setLocalOpen(false);
+              navigate({ to: routeSearch.redirect ?? "/" });
+            }}
+          />
         </DialogContent>
       </Dialog>
       <button onClick={() => auth.logout()}>Logout</button>

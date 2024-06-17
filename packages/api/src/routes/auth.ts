@@ -32,15 +32,14 @@ export const authRouter = router({
 
       return user.id;
     }),
-  validate: publicProcedure.query(async ({ ctx }) => {
-    if (!ctx.authenticated) throw new TRPCError({ code: "UNAUTHORIZED" });
+  validate: authedProcedure.mutation(async ({ ctx }) => {
     const user = await prisma.user.findUnique({
       where: { id: ctx.req.session.user },
       select: { id: true, username: true },
     });
 
     if (!user) throw new TRPCError({ code: "NOT_FOUND" });
-    return { id: user.id }; // TODO: Maybe remove return value (not necessary)
+    return { id: user.id }; // TODO: Return more information later
   }),
   logout: authedProcedure.mutation(async ({ ctx }) => {
     if (ctx.req.session.user) {

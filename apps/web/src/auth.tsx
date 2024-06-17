@@ -4,32 +4,50 @@ import { RouterInputs, trpc } from "./utils/trpc";
 
 export type AuthContext = {
   user: string | null;
-  isAuthenticated: boolean;
-  login: (credentials: RouterInputs["auth"]["login"]) => Promise<void>;
+  login: (
+    credentials: RouterInputs["auth"]["login"],
+    options?: { onSuccess?: () => void; onError?: () => void },
+  ) => Promise<void>;
   logout: () => Promise<void>;
+  isAuthenticated: () => Promise<boolean>;
 };
 
 const authContext = createContext<AuthContext | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthContext["user"] | null>(null);
-  const isAuthenticated = !!user;
 
   const login = trpc.auth.login.useMutation();
   const logout = trpc.auth.logout.useMutation();
+  const validate = trpc.auth.validate.useMutation();
 
   return (
     <authContext.Provider
       value={{
-        isAuthenticated,
         user,
-        login: async (credentials) => {
-          const authedUser = await login.mutateAsync(credentials);
-          setUser(authedUser);
+        login: async (credentials, options) => {
+          try {
+            const authedUser = await login.mutateAsync(credentials);
+            if (options?.onSuccess) options.onSuccess();
+            setUser(authedUser);
+          } catch (e) {
+            if (options?.onError) options.onError;
+            console.log("error logging user in"); // TODO: Replace with toast
+          }
         },
         logout: async () => {
           setUser(null);
           await logout.mutateAsync();
+        },
+        isAuthenticated: async () => {
+          try {
+            const value = await validate.mutateAsync();
+            setUser(value.id);
+            return true;
+          } catch (e) {
+            setUser(null);
+            return false;
+          }
         },
       }}
     >

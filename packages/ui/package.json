@@ -23,6 +23,8 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@maskito/core": "^2.4.0",
+    "@maskito/react": "^2.4.0",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.0.2",
