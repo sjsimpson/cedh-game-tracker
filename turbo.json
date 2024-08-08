@@ -31,6 +31,19 @@
     },
     "dev": {
       "dependsOn": ["@cedh-game-tracker/db#db:generate"],
+      "env": [
+        "NODE_ENV",
+        "APP_ORIGIN",
+        "SESSION_SECRET",
+        "TRPC_PREFIX",
+        "REDIS_HOST",
+        "REDIS_PORT",
+        "REDIS_PASSWORD",
+        "REDIS_SECRET",
+        "API_HOST",
+        "API_PORT",
+        "DATABASE_URL"
+      ],
       "cache": false,
       "persistent": true
     }

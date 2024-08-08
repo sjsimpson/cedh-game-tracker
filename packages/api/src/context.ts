@@ -2,8 +2,10 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
-  const authenticated = req.session.user ? true : false;
-  return { req, res, authenticated };
+  return {
+    req,
+    res,
+  };
 }
 
 export type Context = Awaited<ReturnType<typeof createContext>>;
@@ -11,13 +13,13 @@ export type Context = Awaited<ReturnType<typeof createContext>>;
 const t = initTRPC.context<Context>().create();
 
 const isAuthenticated = () =>
-  t.middleware(({ ctx, next }) => {
-    if (!ctx.authenticated) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+  t.middleware(async ({ ctx, next }) => {
+    if (!ctx.req.session.user) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "You must log in to view this resource",
+      });
     }
-
-    // refresh token expiration
-    ctx.req.session.touch();
 
     return next({
       ctx,

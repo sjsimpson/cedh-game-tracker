@@ -2,7 +2,7 @@ import { Button, Input, Label } from "@cedh-game-tracker/ui";
 import { useForm, type FieldApi } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { trpc } from "../utils/trpc";
+import { trpc } from "../trpc/react";
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (

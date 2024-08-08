@@ -1,20 +1,30 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { trpc } from "../utils/trpc";
+import { api } from "../trpc/client";
+import { trpc } from "../trpc/react";
 
+const UNAUTHORIZED = 401;
+
+// TODO: Extract this into "creatAuthedRoute", or an "authBeforeLoad" function
 export const Route = createFileRoute("/my-games")({
-  // NOTE: Example of preloading data with react-query & trpc
-  // loader: ({ context: { trpcClient, queryClient } }) => {
-  //   const clientUtils = createTRPCQueryUtils({
-  //     queryClient,
-  //     client: trpcClient,
-  //   });
-  //   clientUtils.games.getGames.ensureData();
-  // },
   beforeLoad: async ({ context: { auth }, location }) => {
-    const isAuthenticated = await auth.isAuthenticated();
-    if (!isAuthenticated) {
+    if (!auth.user) {
+      await api.auth.logout.mutate();
       throw redirect({
+        code: UNAUTHORIZED,
+        to: "/",
+        search: {
+          login: true,
+          redirect: location.href,
+        },
+      });
+    }
+
+    try {
+      await api.auth.validate.mutate();
+    } catch (error) {
+      throw redirect({
+        code: UNAUTHORIZED,
         to: "/",
         search: {
           login: true,

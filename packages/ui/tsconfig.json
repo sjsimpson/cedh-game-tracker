@@ -1,8 +1,6 @@
 {
-  "extends": "@cedh-game-tracker/typescript-config/base.json",
-  "compilerOptions": {
-    "jsx": "react-jsx"
-  },
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@cedh-game-tracker/typescript-config/react-library.json",
   "include": ["./"],
   "exclude": ["node_modules"]
 }

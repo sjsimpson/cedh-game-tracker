@@ -1,53 +1,29 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
-import { RouterInputs, trpc } from "./utils/trpc";
-
 export type AuthContext = {
   user: string | null;
-  login: (
-    credentials: RouterInputs["auth"]["login"],
-    options?: { onSuccess?: () => void; onError?: () => void },
-  ) => Promise<void>;
-  logout: () => Promise<void>;
-  isAuthenticated: () => Promise<boolean>;
+  setUser: (user: string | null) => void;
 };
 
 const authContext = createContext<AuthContext | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthContext["user"] | null>(null);
-
-  const login = trpc.auth.login.useMutation();
-  const logout = trpc.auth.logout.useMutation();
-  const validate = trpc.auth.validate.useMutation();
+  const [user, setUser] = useState<AuthContext["user"] | null>(
+    localStorage.getItem("user"),
+  );
 
   return (
     <authContext.Provider
       value={{
         user,
-        login: async (credentials, options) => {
-          try {
-            const authedUser = await login.mutateAsync(credentials);
-            if (options?.onSuccess) options.onSuccess();
-            setUser(authedUser);
-          } catch (e) {
-            if (options?.onError) options.onError;
-            console.log("error logging user in"); // TODO: Replace with toast
+        setUser: (user) => {
+          if (user) {
+            localStorage.setItem("user", user);
+          } else {
+            localStorage.removeItem("user");
           }
-        },
-        logout: async () => {
-          setUser(null);
-          await logout.mutateAsync();
-        },
-        isAuthenticated: async () => {
-          try {
-            const value = await validate.mutateAsync();
-            setUser(value.id);
-            return true;
-          } catch (e) {
-            setUser(null);
-            return false;
-          }
+
+          setUser(user);
         },
       }}
     >

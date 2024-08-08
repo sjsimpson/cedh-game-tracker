@@ -1,3 +1,4 @@
+// import { Toaster } from "@cedh-game-tracker/ui";
 import {
   createRootRouteWithContext,
   Link,
@@ -5,12 +6,17 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
-import type { AuthContext } from "../auth";
+import { useAuth, type AuthContext } from "../auth";
 
 export const Route = createRootRouteWithContext<{
   auth: AuthContext;
 }>()({
-  component: () => (
+  component: App,
+});
+
+function App() {
+  const auth = useAuth();
+  return (
     <>
       <div className="flex gap-2 p-2">
         <Link to="/" className="[&.active]:font-bold">
@@ -19,13 +25,14 @@ export const Route = createRootRouteWithContext<{
         <Link to="/new-user" className="[&.active]:font-bold">
           New User
         </Link>
-        <Link to="/my-games" className="[&.active]:font-bold">
-          My Games
-        </Link>
+        {auth.user && (
+          <Link to="/my-games" className="[&.active]:font-bold">
+            My Games
+          </Link>
+        )}
       </div>
-      <hr />
       <Outlet />
       <TanStackRouterDevtools />
     </>
-  ),
-});
+  );
+}

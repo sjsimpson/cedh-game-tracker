@@ -7,8 +7,10 @@ import {
   Label,
 } from "@cedh-game-tracker/ui";
 import { useForm, type FieldApi } from "@tanstack/react-form";
+import { useEffect } from "react";
 
 import { useAuth } from "../auth";
+import { trpc } from "../trpc/react";
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -23,16 +25,31 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 
 // TODO: Refactor extraction with "DialogHeader" and "DialogFooter",
 // it feels weird in this context
-export function LoginForm({ onSuccess }: { onSuccess: () => void }) {
+export function LoginForm({
+  onSuccessfulLogin,
+}: {
+  onSuccessfulLogin: () => void;
+}) {
   const auth = useAuth();
+
+  const login = trpc.auth.login.useMutation();
 
   const form = useForm({
     defaultValues: {
       email: "",
       password: "",
     },
-    onSubmit: async ({ value }) => await auth.login(value, { onSuccess }),
+    onSubmit: ({ value }) =>
+      login.mutate(value, {
+        onSuccess: (data) => {
+          auth.setUser(data);
+        },
+      }),
   });
+
+  useEffect(() => {
+    if (auth.user) onSuccessfulLogin();
+  }, [auth.user]);
 
   return (
     <form.Provider>

@@ -11,21 +11,21 @@ import { z } from "zod";
 import { useAuth } from "../auth";
 import { LoginForm } from "../components/login-form";
 
-const homeSearchSchema = z.object({
+const HomeSearchSchema = z.object({
   login: z.boolean().optional(),
   redirect: z.string().optional(),
 });
 
-type HomeSearch = z.infer<typeof homeSearchSchema>;
+type HomeSearch = z.infer<typeof HomeSearchSchema>;
 
 export const Route = createFileRoute("/")({
   component: Index,
   validateSearch: (search: Record<string, unknown>): HomeSearch =>
-    homeSearchSchema.parse(search),
+    HomeSearchSchema.parse(search),
 });
 
 function Index() {
-  // NOTE: Ran into issue using "getRouteApi" and "searchParams" typing might be worth a bug report
+  // NOTE: Ran into issue using "getRouteApi" and "searchParams" typing; might be worth a bug report
   const routeSearch = Route.useSearch();
   const navigate = useNavigate();
   const auth = useAuth();
@@ -50,14 +50,15 @@ function Index() {
         </DialogTrigger>
         <DialogContent handleClose={handleCloseModal} className="bg-white">
           <LoginForm
-            onSuccess={() => {
-              setLocalOpen(false);
-              navigate({ to: routeSearch.redirect ?? "/" });
+            onSuccessfulLogin={() => {
+              routeSearch.redirect
+                ? navigate({ to: routeSearch.redirect })
+                : handleCloseModal();
             }}
           />
         </DialogContent>
       </Dialog>
-      <button onClick={() => auth.logout()}>Logout</button>
+      <button onClick={() => auth.setUser(null)}>Logout</button>
     </div>
   );
 }

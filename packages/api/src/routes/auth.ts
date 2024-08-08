@@ -13,14 +13,14 @@ export const authRouter = router({
           id: true,
           username: true,
           email: true,
-          password: true,
         },
         where: {
           email,
+          password,
         },
       });
 
-      if (!user || user.password !== password) {
+      if (!user) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "No matching user or incorrect password.",
@@ -32,19 +32,10 @@ export const authRouter = router({
 
       return user.id;
     }),
-  validate: authedProcedure.mutation(async ({ ctx }) => {
-    const user = await prisma.user.findUnique({
-      where: { id: ctx.req.session.user },
-      select: { id: true, username: true },
-    });
-
-    if (!user) throw new TRPCError({ code: "NOT_FOUND" });
-    return { id: user.id }; // TODO: Return more information later
-  }),
   logout: authedProcedure.mutation(async ({ ctx }) => {
     if (ctx.req.session.user) {
       await ctx.req.session.destroy();
     }
-    return "Logged out successfully.";
   }),
+  validate: authedProcedure.mutation(() => {}),
 });
