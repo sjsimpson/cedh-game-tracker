@@ -25,7 +25,9 @@ if (!SESSION_SECRET) throw EnvironmentError("SESSION_SECRET");
 // Extend fastify.session with your custom type.
 declare module "fastify" {
   interface Session {
-    user: string;
+    user: {
+      id: string;
+    };
   }
 }
 

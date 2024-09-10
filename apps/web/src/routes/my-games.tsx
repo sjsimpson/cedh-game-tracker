@@ -9,7 +9,19 @@ const UNAUTHORIZED = 401;
 export const Route = createFileRoute("/my-games")({
   beforeLoad: async ({ context: { auth }, location }) => {
     if (!auth.user) {
-      await api.auth.logout.mutate();
+      try {
+        await api.auth.signOut.mutate();
+      } catch {
+        throw redirect({
+          code: UNAUTHORIZED,
+          to: "/",
+          search: {
+            login: true,
+            redirect: location.href,
+          },
+        });
+      }
+
       throw redirect({
         code: UNAUTHORIZED,
         to: "/",
@@ -21,8 +33,9 @@ export const Route = createFileRoute("/my-games")({
     }
 
     try {
-      await api.auth.validate.mutate();
+      await api.auth.validateSession.mutate();
     } catch (error) {
+      auth.setUser(null);
       throw redirect({
         code: UNAUTHORIZED,
         to: "/",

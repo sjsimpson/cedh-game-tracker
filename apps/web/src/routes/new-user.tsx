@@ -16,11 +16,11 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 }
 
 export const Route = createFileRoute("/new-user")({
-  component: About,
+  component: NewUser,
 });
 
-function About() {
-  const createUser = trpc.users.createUser.useMutation();
+function NewUser() {
+  const createUser = trpc.auth.signUp.useMutation();
 
   const form = useForm({
     defaultValues: {
@@ -39,7 +39,6 @@ function About() {
 
   return (
     <div className="p-2">
-      Hello from About!
       <form.Provider>
         <form
           onSubmit={(e) => {

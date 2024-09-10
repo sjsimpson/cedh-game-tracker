@@ -9,6 +9,15 @@ services:
       - 5432:5432
     volumes:
       - postgres:/var/lib/postgresql/data
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/var/lib/redis/data
 volumes:
   postgres:
+    driver: local
+  redis:
     driver: local

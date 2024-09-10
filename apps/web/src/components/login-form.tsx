@@ -23,8 +23,6 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   );
 }
 
-// TODO: Refactor extraction with "DialogHeader" and "DialogFooter",
-// it feels weird in this context
 export function LoginForm({
   onSuccessfulLogin,
 }: {
@@ -32,7 +30,7 @@ export function LoginForm({
 }) {
   const auth = useAuth();
 
-  const login = trpc.auth.login.useMutation();
+  const login = trpc.auth.signIn.useMutation();
 
   const form = useForm({
     defaultValues: {
