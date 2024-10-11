@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
+  useToast,
 } from "@cedh-game-tracker/ui";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
@@ -29,6 +30,7 @@ function Index() {
   const routeSearch = Route.useSearch();
   const navigate = useNavigate();
   const auth = useAuth();
+  const { toast } = useToast();
 
   const [localOpen, setLocalOpen] = useState(false);
 
@@ -41,6 +43,7 @@ function Index() {
     navigate({ search: () => ({}) }); // NOTE: Kinda janky, but gets rid of weird refresh issues
   };
 
+  // TODO: change logout button to actually sign user out
   return (
     <div className="p-2">
       <h3>Welcome Home!</h3>
@@ -58,7 +61,14 @@ function Index() {
           />
         </DialogContent>
       </Dialog>
-      <button onClick={() => auth.setUser(null)}>Logout</button>
+      <button
+        onClick={() => {
+          auth.setUser(null);
+          toast({ title: "Logged out successfully" });
+        }}
+      >
+        Logout
+      </button>
     </div>
   );
 }

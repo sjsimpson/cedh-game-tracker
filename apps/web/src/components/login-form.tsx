@@ -5,9 +5,12 @@ import {
   DialogTitle,
   Input,
   Label,
+  useToast,
 } from "@cedh-game-tracker/ui";
 import { useForm, type FieldApi } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
 import { useEffect } from "react";
+import { z } from "zod";
 
 import { useAuth } from "../auth";
 import { trpc } from "../trpc/react";
@@ -29,6 +32,7 @@ export function LoginForm({
   onSuccessfulLogin: () => void;
 }) {
   const auth = useAuth();
+  const { toast } = useToast();
 
   const login = trpc.auth.signIn.useMutation();
 
@@ -37,9 +41,11 @@ export function LoginForm({
       email: "",
       password: "",
     },
+    validatorAdapter: zodValidator,
     onSubmit: ({ value }) =>
       login.mutate(value, {
         onSuccess: (data) => {
+          toast({ title: "Logged in succesfully" });
           auth.setUser(data);
         },
       }),
@@ -62,27 +68,14 @@ export function LoginForm({
         <DialogHeader>
           <DialogTitle>Login</DialogTitle>
         </DialogHeader>
-        {/* A type-safe field component*/}
         <div className="flex flex-col gap-4 bg-white">
           <form.Field
             name="email"
             validators={{
-              onChange: ({ value }) =>
-                !value
-                  ? "Email is required"
-                  : value.length < 3
-                    ? "Email must be at least 3 characters"
-                    : undefined,
-              onChangeAsyncDebounceMs: 500,
-              onChangeAsync: async ({ value }) => {
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-                return (
-                  value.includes("error") && 'No "error" allowed in first name'
-                );
-              },
+              onBlur: z.string().email(),
             }}
             children={(field) => {
-              // Avoid hasty abstractions. Render props are great!
+              const error = field.state.meta.touchedErrors.length > 0;
               return (
                 <div>
                   <Label>Email Address</Label>
@@ -92,6 +85,7 @@ export function LoginForm({
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
+                    error={error}
                   />
                   <FieldInfo field={field} />
                 </div>
@@ -101,19 +95,7 @@ export function LoginForm({
           <form.Field
             name="password"
             validators={{
-              onChange: ({ value }) =>
-                !value
-                  ? "Password is required"
-                  : value.length < 3
-                    ? "Password must be at least 3 characters"
-                    : undefined,
-              onChangeAsyncDebounceMs: 500,
-              onChangeAsync: async ({ value }) => {
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-                return (
-                  value.includes("error") && 'No "error" allowed in first name'
-                );
-              },
+              onChange: z.string().min(1),
             }}
             children={(field) => {
               // Avoid hasty abstractions. Render props are great!

@@ -1,4 +1,5 @@
 // import { Toaster } from "@cedh-game-tracker/ui";
+import { Toaster } from "@cedh-game-tracker/ui";
 import {
   createRootRouteWithContext,
   Link,
@@ -32,6 +33,7 @@ function App() {
         )}
       </div>
       <Outlet />
+      <Toaster />
       <TanStackRouterDevtools />
     </>
   );
