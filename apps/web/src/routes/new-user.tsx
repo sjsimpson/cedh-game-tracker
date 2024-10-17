@@ -1,4 +1,5 @@
-import { Button, Input, Label } from "@cedh-game-tracker/ui";
+import { Button } from "@cedh-game-tracker/ui/components/button";
+import { Input } from "@cedh-game-tracker/ui/components/input";
 import { useForm, type FieldApi } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -71,7 +72,6 @@ function NewUser() {
                 // Avoid hasty abstractions. Render props are great!
                 return (
                   <div>
-                    <Label>Username</Label>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -106,7 +106,6 @@ function NewUser() {
                 // Avoid hasty abstractions. Render props are great!
                 return (
                   <div>
-                    <Label>Email Address</Label>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -141,7 +140,6 @@ function NewUser() {
                 // Avoid hasty abstractions. Render props are great!
                 return (
                   <div>
-                    <Label>Password</Label>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -157,7 +155,7 @@ function NewUser() {
             <form.Subscribe
               selector={(state) => [state.canSubmit, state.isSubmitting]}
               children={([canSubmit, isSubmitting]) => (
-                <Button variant="outline" type="submit" disabled={!canSubmit}>
+                <Button type="submit" disabled={!canSubmit}>
                   {isSubmitting ? "..." : "Submit"}
                 </Button>
               )}

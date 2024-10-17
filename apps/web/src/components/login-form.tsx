@@ -1,12 +1,10 @@
+import { Button } from "@cedh-game-tracker/ui/components/button";
 import {
-  Button,
-  DialogFooter,
-  DialogHeader,
+  DialogActions,
+  DialogBody,
   DialogTitle,
-  Input,
-  Label,
-  useToast,
-} from "@cedh-game-tracker/ui";
+} from "@cedh-game-tracker/ui/components/dialog";
+import { Input } from "@cedh-game-tracker/ui/components/input";
 import { useForm, type FieldApi } from "@tanstack/react-form";
 import { zodValidator } from "@tanstack/zod-form-adapter";
 import { useEffect } from "react";
@@ -32,7 +30,7 @@ export function LoginForm({
   onSuccessfulLogin: () => void;
 }) {
   const auth = useAuth();
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   const login = trpc.auth.signIn.useMutation();
 
@@ -45,7 +43,7 @@ export function LoginForm({
     onSubmit: ({ value }) =>
       login.mutate(value, {
         onSuccess: (data) => {
-          toast({ title: "Logged in succesfully" });
+          // toast({ title: "Logged in succesfully" });
           auth.setUser(data);
         },
       }),
@@ -65,66 +63,64 @@ export function LoginForm({
         }}
         className="flex flex-col gap-4 bg-white"
       >
-        <DialogHeader>
-          <DialogTitle>Login</DialogTitle>
-        </DialogHeader>
-        <div className="flex flex-col gap-4 bg-white">
-          <form.Field
-            name="email"
-            validators={{
-              onBlur: z.string().email(),
-            }}
-            children={(field) => {
-              const error = field.state.meta.touchedErrors.length > 0;
-              return (
-                <div>
-                  <Label>Email Address</Label>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    error={error}
-                  />
-                  <FieldInfo field={field} />
-                </div>
-              );
-            }}
-          />
-          <form.Field
-            name="password"
-            validators={{
-              onChange: z.string().min(1),
-            }}
-            children={(field) => {
-              // Avoid hasty abstractions. Render props are great!
-              return (
-                <div>
-                  <Label>Password</Label>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                  <FieldInfo field={field} />
-                </div>
-              );
-            }}
-          />
-        </div>
-        <DialogFooter>
+        <DialogTitle>Login</DialogTitle>
+        <DialogBody>
+          <div className="flex flex-col gap-4 bg-white">
+            <form.Field
+              name="email"
+              validators={{
+                onBlur: z.string().email(),
+              }}
+              children={(field) => {
+                // const error = field.state.meta.touchedErrors.length > 0;
+                return (
+                  <div>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      // error={error}
+                    />
+                    <FieldInfo field={field} />
+                  </div>
+                );
+              }}
+            />
+            <form.Field
+              name="password"
+              validators={{
+                onChange: z.string().min(1),
+              }}
+              children={(field) => {
+                // Avoid hasty abstractions. Render props are great!
+                return (
+                  <div>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                    <FieldInfo field={field} />
+                  </div>
+                );
+              }}
+            />
+          </div>
+        </DialogBody>
+        <DialogActions>
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
-              <Button variant="outline" type="submit" disabled={!canSubmit}>
+              <Button type="submit" disabled={!canSubmit}>
                 {isSubmitting ? "..." : "Submit"}
               </Button>
             )}
           />
-        </DialogFooter>
+        </DialogActions>
       </form>
     </form.Provider>
   );

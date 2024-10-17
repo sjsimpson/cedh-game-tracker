@@ -1,9 +1,9 @@
 // import { Toaster } from "@cedh-game-tracker/ui";
-import { Toaster } from "@cedh-game-tracker/ui";
+import { Navbar, NavbarItem } from "@cedh-game-tracker/ui/components/navbar";
 import {
   createRootRouteWithContext,
-  Link,
   Outlet,
+  useLocation,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
@@ -17,23 +17,26 @@ export const Route = createRootRouteWithContext<{
 
 function App() {
   const auth = useAuth();
+  const location = useLocation();
+
+  console.log("location", location);
+
   return (
     <>
-      <div className="flex gap-2 p-2">
-        <Link to="/" className="[&.active]:font-bold">
+      <Navbar>
+        <NavbarItem to="/" current={location.pathname === "/"}>
           Home
-        </Link>
-        <Link to="/new-user" className="[&.active]:font-bold">
+        </NavbarItem>
+        <NavbarItem to="/new-user" current={location.pathname === "/new-user"}>
           New User
-        </Link>
+        </NavbarItem>
         {auth.user && (
-          <Link to="/my-games" className="[&.active]:font-bold">
+          <NavbarItem to="/my-games" current={location.pathname === "my-games"}>
             My Games
-          </Link>
+          </NavbarItem>
         )}
-      </div>
+      </Navbar>
       <Outlet />
-      <Toaster />
       <TanStackRouterDevtools />
     </>
   );

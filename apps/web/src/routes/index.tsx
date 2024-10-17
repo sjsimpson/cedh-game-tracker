@@ -1,10 +1,5 @@
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  useToast,
-} from "@cedh-game-tracker/ui";
+import { Button } from "@cedh-game-tracker/ui/components/button";
+import { Dialog } from "@cedh-game-tracker/ui/components/dialog";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -30,7 +25,7 @@ function Index() {
   const routeSearch = Route.useSearch();
   const navigate = useNavigate();
   const auth = useAuth();
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   const [localOpen, setLocalOpen] = useState(false);
 
@@ -47,28 +42,24 @@ function Index() {
   return (
     <div className="p-2">
       <h3>Welcome Home!</h3>
-      <Dialog open={localOpen}>
-        <DialogTrigger asChild>
-          <Button onClick={() => setLocalOpen(!localOpen)}>Open Login</Button>
-        </DialogTrigger>
-        <DialogContent handleClose={handleCloseModal} className="bg-white">
-          <LoginForm
-            onSuccessfulLogin={() => {
-              routeSearch.redirect
-                ? navigate({ to: routeSearch.redirect })
-                : handleCloseModal();
-            }}
-          />
-        </DialogContent>
+      <Button onClick={() => setLocalOpen(!localOpen)}>Open Login</Button>
+      <Dialog open={localOpen} onClose={handleCloseModal}>
+        <LoginForm
+          onSuccessfulLogin={() => {
+            routeSearch.redirect
+              ? navigate({ to: routeSearch.redirect })
+              : handleCloseModal();
+          }}
+        />
       </Dialog>
-      <button
+      <Button
         onClick={() => {
           auth.setUser(null);
-          toast({ title: "Logged out successfully" });
+          // toast({ title: "Logged out successfully" });
         }}
       >
         Logout
-      </button>
+      </Button>
     </div>
   );
 }
